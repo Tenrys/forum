@@ -19,16 +19,11 @@
 
             if (count($results) < 1) {
                 $request = "INSERT INTO utilisateurs (login, password) VALUES (?, ?);";
-                try {
-                    $stmt = $db->prepare($request);
-                    $hashed = password_hash($password, PASSWORD_DEFAULT);
-                    $success = $stmt->execute([$login, $hashed]);
-                    if (!$success) {
-                        echo "Erreur MySQL: {$stmt->error}";
-                        die;
-                    }
-                } catch (Exception $e) {
-                    echo "Exception reçue: {$e->getMessage()}";
+                $stmt = $db->prepare($request);
+                $hashed = password_hash($password, PASSWORD_DEFAULT);
+                $success = $stmt->execute([$login, $hashed]);
+                if (!$success) {
+                    echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
                     die;
                 }
             } else {
