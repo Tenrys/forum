@@ -7,6 +7,7 @@
 - [x] page de connexion
 - [x] acceuil -> liste des forums / topics / catégories
     - [ ] page de nouveau topic pour les modérateurs
+    - [x] suppression de topic (récursif, merci les foreign key)
 - [x] topic -> liste de conversations d'un topic
     - [ ] page de nouvelle conversation pour les utilisateurs connectés
 - [ ] conversation -> liste de messages dans une conversation

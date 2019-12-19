@@ -1,4 +1,6 @@
 <?php
+    include "includes/db.php";
+
     session_start();
 
     if (isset($_SESSION["user"])) {
@@ -8,8 +10,6 @@
 
     if (count($_POST) > 0) {
         extract($_POST);
-
-        $db = new PDO("mysql:host=localhost;dbname=forum", "root", "");
 
         $request = "SELECT * FROM utilisateurs WHERE login = ?;";
         $stmt = $db->prepare($request);

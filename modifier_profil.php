@@ -1,4 +1,6 @@
 <?php
+    include "includes/db.php";
+
     session_start();
 
     if (!isset($_SESSION["user"])) {
@@ -20,8 +22,6 @@
         }
 
         if (!isset($error)) {
-            $db = new PDO("mysql:host=localhost;dbname=forum", "root", "");
-
             $request = "UPDATE utilisateurs SET login = :login, password = :password, naissance = :naissance, bio = :bio, email = :email WHERE id = :id;";
             $stmt = $db->prepare($request);
             $success = $stmt->execute([

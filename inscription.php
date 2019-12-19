@@ -1,4 +1,6 @@
 <?php
+    include "includes/db.php";
+
     session_start();
 
     if (isset($_SESSION["user"])) {
@@ -10,8 +12,6 @@
         extract($_POST);
 
         if ($password == $passwordConfirm) {
-            $db = new PDO("mysql:host=localhost;dbname=forum", "root", "");
-
             $request = "SELECT * FROM utilisateurs WHERE login = ?";
             $stmt = $db->prepare($request);
             $stmt->execute([$login]);
