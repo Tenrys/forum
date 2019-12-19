@@ -28,8 +28,8 @@
     $results = $stmt->fetchAll();
 ?>
 
-<title>Index</title>
-<h1>Index</h1>
+<title>Forum</title>
+<h1>Forum</h1>
 
 <?php
     if (isset($_SESSION["user"])) { ?>
@@ -50,7 +50,7 @@
     }
 
     foreach ($results as $topic) {
-        if ($topic["rang_min"] <= ($id_rang ?? 1)) { ?>
+        if ($topic["rang_min"] <= ($id_rang ?? 0)) { ?>
             <article style="margin: 1em 0; padding: 0 0.5em; border: 1px solid black; border-radius: 2px;">
                 <h1><a href="topic.php?id=<?= $topic['id'] ?>"><?= $topic["nom"] ?></a></h1>
                 <p><?= $topic["description"] ?? "" ?></p>

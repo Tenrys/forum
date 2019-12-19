@@ -6,13 +6,15 @@
 - [x] page d'édition de profil
 - [x] page de connexion
 - [x] acceuil -> liste des forums / topics / catégories
-    - [ ] page de nouveau topic pour les modérateurs
-    - [x] suppression de topic (récursif, merci les foreign key)
+    - pour modérateurs:
+        - [x] ajout de topic
+        - [ ] modification de topic
+        - [x] suppression de topic (récursif, merci les foreign key)
 - [x] topic -> liste de conversations d'un topic
-    - [ ] page de nouvelle conversation pour les utilisateurs connectés
+    - [ ] ajout de conversation pour les utilisateurs connectés
 - [ ] conversation -> liste de messages dans une conversation
 	- [ ] affichage d'outils de conversation
 		- vérrouillage, épinglage (modérateur+ seulement)
-		- modification, suppression de message (pour auteur et modérateurs+)
+		- modification, suppression de message / topic (pour auteur et modérateurs+)
     - [ ] formulaire pour ajouter un message au bas de page
     - [ ] page pour édition des messages / topic (pour auteur et modérateurs+)

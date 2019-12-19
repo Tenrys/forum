@@ -56,7 +56,7 @@
                 </select>
             </form>
 <?php   } else {
-            echo "<h3>" . $rankNames[$user["id_rang"]] ?? 'Rang inconnu' . "</h3>";
+            echo "<h3>" . ($rankNames[$user["id_rang"]] ?? 'Rang inconnu') . "</h3>";
         }
 
         if (isset($user["email"])) {
