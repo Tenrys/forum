@@ -47,7 +47,7 @@
 
         echo "<h2>{$user["login"]}</h2>";
 
-        if ($id_rang >= 3 && $user["id"] != $id) { ?>
+        if ($id_rang >= 3 && $user["id"] != $_SESSION["user"]["id"]) { ?>
             <form method="post">
                 <select name="rang" onchange="this.form.submit()">
                 <?php foreach ($rankNames as $k => $v) {
@@ -76,7 +76,7 @@
 
         echo "<p><b>Inscrit le</b>: <code>{$user["inscription"]}</code></p>";
 
-        if ($user["id"] == $id) {
+        if ($user["id"] == $_SESSION["user"]["id"]) {
             echo "<a href='modifier_profil.php'>Modifier</a>";
         }
     }

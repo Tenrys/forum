@@ -7,14 +7,14 @@
 - [x] page de connexion
 - [x] acceuil -> liste des forums / topics / catégories
     - pour modérateurs:
-        - [x] ajout de topic
-        - [ ] modification de topic
+        - [x] création de topic
         - [x] suppression de topic (récursif, merci les foreign key)
 - [x] topic -> liste de conversations d'un topic
-    - [ ] ajout de conversation pour les utilisateurs connectés
-- [ ] conversation -> liste de messages dans une conversation
-	- [ ] affichage d'outils de conversation
-		- vérrouillage, épinglage (modérateur+ seulement)
-		- modification, suppression de message / topic (pour auteur et modérateurs+)
-    - [ ] formulaire pour ajouter un message au bas de page
-    - [ ] page pour édition des messages / topic (pour auteur et modérateurs+)
+    - [ ] création de conversation pour les membres
+- [x] conversation -> liste de messages dans une conversation
+	- [x] like / dislike
+	- [ ] vérrouillage (modérateur+ seulement)
+	- [ ] épinglage (modérateur+ seulement)
+	- [x] suppression de message (pour auteur et modérateurs+)
+    - [x] formulaire pour ajouter un message au bas de page
+- [ ] modification de message / conversation (pour auteur et modérateurs+)

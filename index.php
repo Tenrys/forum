@@ -37,7 +37,7 @@
         <br/>
         <a href="modifier_profil.php">Modifier profil</a>
         <br/>
-        <a href="profil.php?id=<?= $id ?>">Mon profil</a>
+        <a href="profil.php?id=<?= $_SESSION["user"]["id"] ?>">Mon profil</a>
     <?php } else { ?>
         <a href="connexion.php">Connexion</a>
         <br/>

@@ -30,7 +30,7 @@
                 "naissance" => empty($newInfo["naissance"]) ? NULL : $newInfo["naissance"],
                 "bio" => empty($newInfo["bio"]) ? NULL : $newInfo["bio"],
                 "email" => empty($newInfo["email"]) ? NULL : $newInfo["email"],
-                "id" => $id
+                "id" => $_SESSION["user"]["id"]
             ]);
             if ($success) {
                 $request = "SELECT * FROM utilisateurs WHERE login = ?;";
