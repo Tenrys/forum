@@ -1,5 +1,5 @@
 <?php
-    include "includes/db.php";
+    include "includes/shortcuts.php";
 
     session_start();
 
@@ -7,23 +7,18 @@
         extract($_SESSION["user"]);
     }
 
-    if (isset($_POST["action"]) && isModerator()) {
-        switch ($_POST["action"]) {
-            case "delete":
-                if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
-                    $stmt = $db->prepare("DELETE FROM topics WHERE id = ?");
-                    $success = $stmt->execute([$_POST["id"]]);
-                    if (!$success) {
-                        echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-                        die;
-                    }
-                }
-                break;
+    if (isset($_POST["supprimer"]) && isModerator()) {
+        if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
+            $stmt = $db->prepare("DELETE FROM topics WHERE id = ?");
+            $success = $stmt->execute([$_POST["id"]]);
+            if (!$success) {
+                echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
+                die;
+            }
         }
     }
 
-    $request = "SELECT * FROM topics";
-    $stmt = $db->prepare($request);
+    $stmt = $db->prepare("SELECT * FROM topics");
     $stmt->execute();
     $results = $stmt->fetchAll();
 ?>
@@ -56,9 +51,8 @@
                 <p><?= $topic["description"] ?? "" ?></p>
                 <?php if (isModerator()) { ?>
                     <form method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce topic?');">
-                        <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id" value="<?= $topic['id'] ?>">
-                        <input type="submit"value="Supprimer">
+                        <input type="submit" name="supprimer" value="Supprimer">
                     </form>
                 <?php } ?>
             </article>

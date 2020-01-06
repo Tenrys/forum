@@ -1,11 +1,10 @@
 <?php
-    include "includes/db.php";
+    include "includes/shortcuts.php";
 
     session_start();
 
     if (!isset($_SESSION["user"])) {
-        header("Location: index.php");
-        die;
+        home();
     }
 
     extract($_SESSION["user"]);
@@ -22,8 +21,9 @@
         }
 
         if (!isset($error)) {
-            $request = "UPDATE utilisateurs SET login = :login, password = :password, naissance = :naissance, bio = :bio, email = :email WHERE id = :id;";
-            $stmt = $db->prepare($request);
+            $stmt = $db->prepare("UPDATE utilisateurs
+            SET login = :login, password = :password, naissance = :naissance, bio = :bio, email = :email
+            WHERE id = :id");
             $success = $stmt->execute([
                 "login" => $newInfo["login"],
                 "password" => $newInfo["password"],
@@ -32,18 +32,18 @@
                 "email" => empty($newInfo["email"]) ? NULL : $newInfo["email"],
                 "id" => $_SESSION["user"]["id"]
             ]);
-            if ($success) {
-                $request = "SELECT * FROM utilisateurs WHERE login = ?;";
-                $stmt = $db->prepare($request);
-                $stmt->execute([$newInfo["login"]]);
-                $results = $stmt->fetchAll();
-
-                // Mise à jour de la session
-                $_SESSION["user"] = $results[0];
-                extract($_SESSION["user"]);
-            } else {
+            if (!$success) {
                 echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
+                die;
             }
+
+            $stmt = $db->prepare("SELECT * FROM utilisateurs WHERE login = ?");
+            $stmt->execute([$newInfo["login"]]);
+            $results = $stmt->fetchAll();
+
+            // Mise à jour de la session
+            $_SESSION["user"] = $results[0];
+            extract($_SESSION["user"]);
         }
     }
 ?>

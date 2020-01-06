@@ -1,25 +1,27 @@
 <?php
-    include "includes/db.php";
+    include "includes/shortcuts.php";
 
     session_start();
 
     if (!isModerator()) {
-        header("Location: index.php");
-        die;
+        home();
     }
 
     if (count($_POST) > 0) {
         extract($_POST);
 
         $stmt = $db->prepare("INSERT INTO topics (nom, description, rang_min) VALUES (:nom, :description, :rang_min)");
-        $success = $stmt->execute($_POST);
-        if ($success) {
-            header("Location: index.php");
-            die;
-        } else {
+        $success = $stmt->execute([
+            "nom" => $_POST["nom"],
+            "description" => $_POST["description"],
+            "rang_min" => $_POST["rang_min"]
+        ]);
+        if (!$success) {
             echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
             die;
         }
+
+        home();
     }
 ?>
 

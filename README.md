@@ -10,11 +10,11 @@
         - [x] création de topic
         - [x] suppression de topic (récursif, merci les foreign key)
 - [x] topic -> liste de conversations d'un topic
-    - [ ] création de conversation pour les membres
+    - [x] création de conversation pour les membres
 - [x] conversation -> liste de messages dans une conversation
 	- [x] like / dislike
-	- [ ] vérrouillage (modérateur+ seulement)
-	- [ ] épinglage (modérateur+ seulement)
+	- [x] vérrouillage (modérateur+ seulement)
+	- [x] épinglage (modérateur+ seulement)
 	- [x] suppression de message (pour auteur et modérateurs+)
     - [x] formulaire pour ajouter un message au bas de page
-- [ ] modification de message / conversation (pour auteur et modérateurs+)
+- [x] modification de message / conversation (pour auteur et modérateurs+)

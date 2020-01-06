@@ -17,4 +17,9 @@
         }
         return false;
     }
+
+    function home() {
+        header("Location: index.php");
+        die;
+    }
 ?>

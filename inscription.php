@@ -1,25 +1,22 @@
 <?php
-    include "includes/db.php";
+    include "includes/shortcuts.php";
 
     session_start();
 
     if (isset($_SESSION["user"])) {
-        header("Location: index.php");
-        die;
+        home();
     }
 
     if (count($_POST) > 0) {
         extract($_POST);
 
         if ($password == $passwordConfirm) {
-            $request = "SELECT * FROM utilisateurs WHERE login = ?";
-            $stmt = $db->prepare($request);
+            $stmt = $db->prepare("SELECT * FROM utilisateurs WHERE login = ?");
             $stmt->execute([$login]);
             $results = $stmt->fetchAll();
 
             if (count($results) < 1) {
-                $request = "INSERT INTO utilisateurs (login, password) VALUES (?, ?);";
-                $stmt = $db->prepare($request);
+                $stmt = $db->prepare("INSERT INTO utilisateurs (login, password) VALUES (?, ?)");
                 $hashed = password_hash($password, PASSWORD_DEFAULT);
                 $success = $stmt->execute([$login, $hashed]);
                 if (!$success) {
