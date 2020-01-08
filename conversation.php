@@ -1,11 +1,14 @@
 <?php
-    include "includes/shortcuts.php";
+include "includes/layout.php";
 
-    session_start();
+session_start();
 
-    if (isset($_SESSION["user"])) {
-        extract($_SESSION["user"]);
-    }
+layout(function() {
+	include "includes/shortcuts.php";
+
+	if (isset($_SESSION["user"])) {
+		extract($_SESSION["user"]);
+	}
 
 	if (isset($_POST["verrouiller"]) && isModerator()) {
 		$stmt = $db->prepare("UPDATE conversations SET verrouillage = NOT verrouillage WHERE id = ?");
@@ -25,11 +28,11 @@
 		}
 	}
 
-    $stmt = $db->prepare("SELECT conversations.*, topics.rang_min
+	$stmt = $db->prepare("SELECT conversations.*, topics.rang_min
 	FROM conversations
 	INNER JOIN topics ON topics.id = conversations.id_topic
 	WHERE conversations.id = ?");
-    $success = $stmt->execute([$_GET["id"]]);
+	$success = $stmt->execute([$_GET["id"]]);
 	$conversation = $stmt->fetch();
 
 	if (!isset($conversation) || !$conversation) {
@@ -71,7 +74,7 @@
 			echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
 			die;
 		}
-    }
+	}
 
 	if (isset($_POST["like"]) || isset($_POST["dislike"])) {
 		if (!isset($_SESSION["user"])) {
@@ -99,9 +102,9 @@
 			echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
 			die;
 		}
-		$results = $stmt->fetch();
+		$reaction = $stmt->fetch();
 		// Est-ce que l'on a déjà donné cette réaction ?
-		if ($results) {
+		if ($reaction) {
 			// Si oui, on la supprime.
 			$db->prepare("DELETE FROM reactions WHERE id_utilisateur = :id_utilisateur AND id_message = :id AND type = :type")->execute($params);
 		} else {
@@ -110,7 +113,7 @@
 		}
 	}
 
-    $stmt = $db->prepare("SELECT
+	$stmt = $db->prepare("SELECT
 		messages.*,
 		utilisateurs.login AS nom_auteur,
 		(SELECT COUNT(*) FROM reactions WHERE id_message = messages.id AND type = 0) AS dislikes,
@@ -119,20 +122,19 @@
 	INNER JOIN utilisateurs ON utilisateurs.id = messages.id_auteur
 	WHERE id_conversation = ?
 	ORDER BY creation ASC");
-    $success = $stmt->execute([$_GET["id"]]);
-	$results = $stmt->fetchAll();
+	$success = $stmt->execute([$_GET["id"]]);
+	$messages = $stmt->fetchAll();
 
-	if (count($results) < 1) {
+	if (count($messages) < 1) {
 		home();
 	}
 ?>
 
-<title><?= $conversation["nom"] ?></title>
 <h1><?= $conversation["nom"] ?></h1>
 <a href="topic.php?id=<?= $conversation["id_topic"] ?>">Retour</a>
 
 <?php
-	foreach ($results as $id => $message) { ?>
+	foreach ($messages as $id => $message) { ?>
 		<article style="margin: 1em 0; padding: 0 0.5em; border: 1px solid black; border-radius: 2px;" id="<?= $id ?>">
 			<p><b><?= $message["nom_auteur"] ?></b>&nbsp;<code><?= $message["creation"] ?></code></p>
 			<hr/>
@@ -173,4 +175,4 @@
 			</form>
 		</article>
 	<?php }
-?>
+}, [ "title" => $conversation["nom"] ]); ?>
