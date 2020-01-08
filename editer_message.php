@@ -43,10 +43,6 @@ layout(function() {
 					"nom" => $_POST["nom"],
 					"id_conversation" => $message["id_conversation"],
 				]);
-				if (!$success) {
-					echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-					die;
-				}
 			}
 
 			$stmt = $db->prepare("UPDATE messages
@@ -56,10 +52,6 @@ layout(function() {
 				"contenu" => $_POST["contenu"],
 				"id" => $message["id"],
 			]);
-			if (!$success) {
-				echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-				die;
-			}
 
 			header("Location: conversation.php?id={$message['id_conversation']}#{$message['id']}");
 			die;
@@ -67,10 +59,6 @@ layout(function() {
 	} else if ($_GET["id"] == "new" && is_numeric($_GET["id_topic"])) {
 		$stmt = $db->prepare("SELECT * FROM topics WHERE id = ?");
 		$success = $stmt->execute([$_GET["id_topic"]]);
-		if (!$success) {
-			echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-			die;
-		}
 		$topic = $stmt->fetch();
 		if (!$topic || $topic["rang_min"]) {
 			home();
@@ -83,10 +71,6 @@ layout(function() {
 				"id_auteur" => $_SESSION["user"]["id"],
 				"id_topic" => $_GET["id_topic"],
 			]);
-			if (!$success) {
-				echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-				die;
-			}
 			$conversationId = $db->lastInsertId();
 
 			$stmt = $db->prepare("INSERT INTO messages (contenu, id_auteur, id_conversation) VALUES (:contenu, :id_auteur, :id_conversation)");
@@ -95,10 +79,6 @@ layout(function() {
 				"id_auteur" => $_SESSION["user"]["id"],
 				"id_conversation" => $conversationId,
 			]);
-			if (!$success) {
-				echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-				die;
-			}
 			$messageId = $db->lastInsertId();
 
 			header("Location: conversation.php?id={$conversationId}#{$messageId}");
@@ -109,8 +89,9 @@ layout(function() {
 	}
 ?>
 
-<h1><?= $title ?></h1>
-<a href="#" onclick="history.back()">Retour</a>
+<header>
+	<h1><?= $title ?></h1>
+</header>
 
 <?php
 	if (isset($error)) {
@@ -127,6 +108,6 @@ layout(function() {
 
 	<textarea required name="contenu" placeholder="Bla bla bla..." rows="5"><?= isset($message) ? $message["contenu"] : "" ?></textarea><br/>
 
-	<input type="submit" value="<?= $_GET['id'] == 'new' ? 'Créer' : 'Modifier' ?>">
+	<input class="button" type="submit" value="<?= $_GET['id'] == 'new' ? 'Créer' : 'Modifier' ?>">
 </form>
 <?php }, [ "title" => $title ]); ?>

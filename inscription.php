@@ -22,10 +22,6 @@ layout(function() {
 				$stmt = $db->prepare("INSERT INTO utilisateurs (login, password) VALUES (?, ?)");
 				$hashed = password_hash($password, PASSWORD_DEFAULT);
 				$success = $stmt->execute([$login, $hashed]);
-				if (!$success) {
-					echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-					die;
-				}
 			} else {
 				$error = "Cet utilisateur existe déjà !";
 			}
@@ -35,8 +31,9 @@ layout(function() {
 	}
 ?>
 
-<h1>Inscription</h1>
-<a href="index.php">Retour</a>
+<header>
+	<h1>Inscription</h1>
+</header>
 
 <?php
 	if (isset($error)) {
@@ -46,17 +43,29 @@ layout(function() {
 		echo "<h4 class='success'>Compte créé avec succès ! Vous pouvez dorénavant vous connecter...<br>Vous allez être redirigé dans 5 secondes...</h4>";
 		header("Refresh: 5; URL=connexion.php");
 	} else { ?>
-		<form method="post">
-			<label for="login">Login</label>
-			<input type="text" name="login" required minlength="3" maxlength="255" value="<?= $login ?? '' ?>">
+		<form method="post" style="padding: 0 25%;">
+			<div class="columns">
+				<div class="column">
+					<label for="login">Login</label>
+					<input type="text" name="login" required minlength="3" maxlength="255" value="<?= $login ?? '' ?>">
+				</div>
+			</div>
+			<div class="columns">
+				<div class="column">
+					<label for="password">Mot de passe</label>
+					<input type="password" name="password" required minlength="3" maxlength="255">
+				</div>
+				<div class="column">
+					<label for="passwordConfirm">Mot de passe (confirmation)</label>
+					<input type="password" name="passwordConfirm" required minlength="3" maxlength="255">
+				</div>
+			</div>
 
-			<label for="password">Mot de passe</label>
-			<input type="password" name="password" required minlength="3" maxlength="255">
-
-			<label for="passwordConfirm">Mot de passe (confirmation)</label>
-			<input type="password" name="passwordConfirm" required minlength="3" maxlength="255">
-
-			<input type="submit" value="S'inscrire">
+			<div class="columns">
+				<div class="column">
+					<input class="button" type="submit" value="S'inscrire">
+				</div>
+			</div>
 		</form>
 	<?php }
 });

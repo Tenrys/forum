@@ -1,44 +1,36 @@
 <?php
 
 include "includes/layout.php";
+include "includes/shortcuts.php";
+
+if (!isset($_GET["id"])) {
+	home();
+}
+
+session_start();
+
+if (isset($_POST["rang"]) && is_numeric($_POST["rang"]) && $_POST["rang"] <= 3 && $_POST["rang"] >= 1 && $id_rang >= 3) {
+	$stmt = $db->prepare("UPDATE utilisateurs SET id_rang = ? WHERE id = ?");
+	$editSuccess = $stmt->execute([$_POST["rang"], $_GET["id"]]);
+}
+
+$stmt = $db->prepare("SELECT * FROM utilisateurs WHERE id = ?");
+$success = $stmt->execute([$_GET["id"]]);
+$user = $stmt->fetch();
+
+if (!$user) {
+	home();
+}
 
 layout(function() {
-	include "includes/shortcuts.php";
-
-	if (!isset($_GET["id"])) {
-		home();
-	}
-
-	session_start();
-
-	if (isset($_SESSION["user"])) {
-		extract($_SESSION["user"]);
-	}
-
-	if (isset($_POST["rang"]) && is_numeric($_POST["rang"]) && $_POST["rang"] <= 3 && $_POST["rang"] >= 1 && $id_rang >= 3) {
-		$stmt = $db->prepare("UPDATE utilisateurs SET id_rang = ? WHERE id = ?");
-		$editSuccess = $stmt->execute([$_POST["rang"], $_GET["id"]]);
-		if (!$editSuccess) {
-			echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-			die;
-		}
-	}
-
-	$stmt = $db->prepare("SELECT * FROM utilisateurs WHERE id = ?");
-	$success = $stmt->execute([$_GET["id"]]);
-	$user = $stmt->fetch();
-	if (!$success) {
-		echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-		die;
-	}
-
-	if (!$user) {
-		home();
-	}
+	global $db, $user, $rankNames;
 ?>
 
-<h1>Profil de <?= $user["login"] ?></h1>
-<a href="index.php">Retour</a>
+<div class="flex-center">
+	<section class="profile">
+		<header>
+			<h1>Profil de <code><?= $user["login"] ?></code></h1>
+		</header>
 
 <?php
 	if (isset($user)) {
@@ -46,9 +38,7 @@ layout(function() {
 			echo "<h4 class='success'>Modifications enregistrées avec succès !</h4>";
 		}
 
-		echo "<h2>{$user["login"]}</h2>";
-
-		if ($id_rang >= 3 && $user["id"] != $_SESSION["user"]["id"]) { ?>
+		if (isset($_SESSION["user"]) && $_SESSION["user"]["id_rang"] >= 3 && $user["id"] != $_SESSION["user"]["id"]) { ?>
 			<form method="post">
 				<select name="rang" onchange="this.form.submit()">
 				<?php foreach ($rankNames as $k => $v) {
@@ -64,6 +54,8 @@ layout(function() {
 			echo "<p><b>E-mail</b>: <code>{$user["email"]}</code></p>";
 		}
 
+		echo "<p><b>Inscrit le</b>: <code>{$user["inscription"]}</code></p>";
+
 		if (isset($user["naissance"])) {
 			echo "<p><b>Né(e) le</b>: <code>{$user["naissance"]}</code></p>";
 		}
@@ -75,11 +67,16 @@ layout(function() {
 			</p>
 <?php   }
 
-		echo "<p><b>Inscrit le</b>: <code>{$user["inscription"]}</code></p>";
 
-		if ($user["id"] == $_SESSION["user"]["id"]) {
-			echo "<a href='modifier_profil.php'>Modifier</a>";
+		if (isset($_SESSION["user"]) && $user["id"] == $_SESSION["user"]["id"]) {
+			echo "<a class='button' href='modifier_profil.php'>Modifier</a>";
 		}
 	}
+?>
+
+	</section>
+</div>
+
+<?php
 }, [ "title" => "Profil de {$user['login']}" ]);
 ?>

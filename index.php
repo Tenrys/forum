@@ -14,10 +14,6 @@ layout(function() {
 		if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
 			$stmt = $db->prepare("DELETE FROM topics WHERE id = ?");
 			$success = $stmt->execute([$_POST["id"]]);
-			if (!$success) {
-				echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-				die;
-			}
 		}
 	}
 
@@ -26,39 +22,31 @@ layout(function() {
 	$topics = $stmt->fetchAll();
 ?>
 
-<h1>Acceuil du forum</h1>
+<header>
+	<h1>Acceuil du forum</h1>
+	<?php
+		if (isModerator()) {
+			echo "<a class='absolute-top-right button' href='nouveau_topic.php'>Nouveau topic</a>";
+		}
+	?>
+</header>
 
 <?php
-	if (isset($_SESSION["user"])) { ?>
-		<a href="deconnexion.php">Déconnexion</a>
-		<br/>
-		<a href="modifier_profil.php">Modifier profil</a>
-		<br/>
-		<a href="profil.php?id=<?= $_SESSION["user"]["id"] ?>">Mon profil</a>
-<?php } else { ?>
-		<a href="connexion.php">Connexion</a>
-		<br/>
-		<a href="inscription.php">Inscription</a>
-<?php }
-
-	if (isModerator()) {
-		echo "<br/><br/>";
-		echo "<a href='nouveau_topic.php'>Nouveau topic</a>";
-	}
-
+	echo "<section class='topics'>";
 	foreach ($topics as $topic) {
 		if ($topic["rang_min"] <= ($id_rang ?? 0)) { ?>
-			<article>
+			<article class="topic">
 				<h1><a href="topic.php?id=<?= $topic['id'] ?>"><?= $topic["nom"] ?></a></h1>
 				<p><?= $topic["description"] ?? "" ?></p>
 				<?php if (isModerator()) { ?>
-					<form method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce topic?');">
+					<form class="absolute-top-right" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce topic?');">
 						<input type="hidden" name="id" value="<?= $topic['id'] ?>">
-						<input type="submit" name="supprimer" value="Supprimer">
+						<input class="button" type="submit" name="supprimer" value="Supprimer">
 					</form>
 				<?php } ?>
 			</article>
 <?php   }
 	}
+	echo "</section>";
 });
 ?>

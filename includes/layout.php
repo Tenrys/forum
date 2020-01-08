@@ -23,10 +23,25 @@ function layout($render, $options = []) {
 </head>
 <body>
 	<nav>
-
+		<ul class="start">
+			<li><a href="index.php">Acceuil</a></li>
+		</ul>
+		<ul class="end">
+			<?php
+				if (isset($_SESSION["user"])) { ?>
+					<li><a href="profil.php?id=<?= $_SESSION["user"]["id"] ?>">Mon profil</a></li>
+					<li><a href="deconnexion.php">Déconnexion</a></li>
+			<?php } else { ?>
+					<li><a href="connexion.php">Connexion</a></li>
+					<li><a href="inscription.php">Inscription</a></li>
+			<?php } ?>
+		</ul>
 	</nav>
-	<?= $render() ?>
+	<main>
+		<?= $render() ?>
+	</main>
 	<footer>
+
 	</footer>
 </body>
 </html>

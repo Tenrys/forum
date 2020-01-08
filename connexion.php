@@ -30,8 +30,9 @@ layout(function() {
 		}
 	}
 ?>
-	<h1>Connexion</h1>
-	<a href="index.php">Retour</a>
+	<div class="header">
+		<h1>Connexion</h1>
+	</div>
 
 	<?php
 	if (isset($error)) {
@@ -39,14 +40,26 @@ layout(function() {
 	}
 	?>
 
-	<form method="post">
-		<label for="login">Login</label>
-		<input type="text" name="login" required minlength="3" maxlength="255" value="<?= $login ?? '' ?>">
+	<form method="post" style="padding: 0 25%;">
+		<div class="columns">
+			<div class="column">
+				<label for="login">Login</label>
+				<input type="text" name="login" required minlength="3" maxlength="255" value="<?= $login ?? '' ?>">
+			</div>
+		</div>
 
-		<label for="password">Mot de passe</label>
-		<input type="password" name="password" required minlength="3" maxlength="255" value="<?= $password ?? '' ?>">
+		<div class="columns">
+			<div class="column">
+				<label for="password">Mot de passe</label>
+				<input type="password" name="password" required minlength="3" maxlength="255" value="<?= $password ?? '' ?>">
+			</div>
+		</div>
 
-		<input type="submit" value="Se connecter">
 
+		<div class="columns">
+			<div class="column">
+				<input class="button" type="submit" value="Se connecter">
+			</div>
+		</div>
 	</form>
 <?php }); ?>

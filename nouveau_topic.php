@@ -18,17 +18,14 @@ layout(function() {
 			"description" => $_POST["description"],
 			"rang_min" => $_POST["rang_min"]
 		]);
-		if (!$success) {
-			echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-			die;
-		}
 
 		home();
 	}
 ?>
 
-<h1>Nouveau topic</h1>
-<a href="index.php">Retour</a>
+<header>
+	<h1>Nouveau topic</h1>
+</header>
 
 <?php
 if (isset($error)) {
@@ -52,6 +49,6 @@ if (isset($error)) {
 		} ?>
 	</select>
 
-	<input type="submit" value="Créer">
+	<input class="button" type="submit" value="Créer">
 </form>
 <?php }); ?>

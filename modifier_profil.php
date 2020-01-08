@@ -35,10 +35,6 @@ layout(function() {
 				"email" => empty($newInfo["email"]) ? NULL : $newInfo["email"],
 				"id" => $_SESSION["user"]["id"]
 			]);
-			if (!$success) {
-				echo "Erreur MySQL: {$stmt->errorInfo()[2]}";
-				die;
-			}
 
 			$stmt = $db->prepare("SELECT * FROM utilisateurs WHERE login = ?");
 			$stmt->execute([$newInfo["login"]]);
@@ -51,8 +47,9 @@ layout(function() {
 	}
 ?>
 
-<h1>Modification du profil</h1>
-<a href="index.php">Retour</a>
+<header class="flex-center">
+	<h1>Modification du profil</h1>
+</header>
 
 <?php
 	if (isset($error)) {
@@ -62,29 +59,50 @@ layout(function() {
 		echo "<h4 class='success'>Modifications enregistrées avec succès !</h4>";
 	}
 ?>
-	<form method="post">
-		<label for="login">Login</label>
-		<input type="text" name="login" required minlength="3" maxlength="255" value="<?= $login ?? '' ?>">
+	<form method="post" style="padding: 0 25%;">
+		<div class="columns">
+			<div class="column">
+				<label for="login">Login</label>
+				<input type="text" name="login" required minlength="3" maxlength="255" value="<?= $login ?? '' ?>">
+			</div>
+		</div>
 
-		<label for="password">Mot de passe</label>
-		<input type="password" name="password" placeholder="Optionnel" minlength="3" maxlength="255">
+		<div class="columns">
+			<div class="column">
+				<label for="password">Mot de passe</label>
+				<input type="password" name="password" placeholder="Optionnel" minlength="3" maxlength="255">
+			</div>
+			<div class="column">
+				<label for="passwordConfirm">Mot de passe (confirmation)</label>
+				<input type="password" name="passwordConfirm" placeholder="Optionnel" minlength="3" maxlength="255">
+			</div>
+		</div>
 
-		<label for="passwordConfirm">Mot de passe (confirmation)</label>
-		<input type="password" name="passwordConfirm" placeholder="Optionnel" minlength="3" maxlength="255">
+		<div class="columns">
+			<div class="column">
+				<label for="email">E-mail</label>
+				<input type="email" name="email" maxlength="255" placeholder="exemple@gmail.com" value="<?= $email ?>">
+			</div>
+		</div>
 
-		<br/>
-		<label for="email">E-mail</label>
-		<input type="email" name="email" maxlength="255" placeholder="exemple@gmail.com" value="<?= $email ?>">
+		<div class="columns">
+			<div class="column">
+				<label for="naissance">Date de naissance</label>
+				<input type="date" name="naissance" max="<?= date('Y-m-d', strtotime("-13 years")) ?>" value="<?= $naissance ?>">
+			</div>
+		</div>
 
-		<label for="naissance">Date de naissance</label>
-		<input type="date" name="naissance" max="<?= date('Y-m-d', strtotime("-13 years")) ?>" value="<?= $naissance ?>">
+		<div class="columns">
+			<div class="column">
+				<label for="bio">Biographie</label>
+				<textarea name="bio" maxlength="255" rows="4"><?= $bio ?></textarea>
+			</div>
+		</div>
 
-		<br/>
-		<label for="bio">Biographie</label>
-		<br/>
-		<textarea name="bio" maxlength="255"><?= $bio ?></textarea>
-		<br/>
-
-		<input type="submit" value="Enregistrer">
+		<div class="columns">
+			<div class="column">
+				<input class="button" type="submit" value="Enregistrer">
+			</div>
+		</div>
 	</form>
 <?php }); ?>
