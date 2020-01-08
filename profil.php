@@ -70,7 +70,7 @@ layout(function() {
 
 		if (isset($user["bio"])) { ?>
 			<p><b>Biographie</b>:</p>
-			<p style="padding: 0.5em; display: inline; border: 1px solid black; border-radius: 2px;">
+			<p>
 				<code><?= $user['bio'] ?></code>
 			</p>
 <?php   }

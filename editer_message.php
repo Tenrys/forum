@@ -125,7 +125,7 @@ layout(function() {
 		<br/>
 	<?php } ?>
 
-	<textarea required name="contenu" placeholder="Bla bla bla..." style="width: 100%;" rows="5"><?= isset($message) ? $message["contenu"] : "" ?></textarea><br/>
+	<textarea required name="contenu" placeholder="Bla bla bla..." rows="5"><?= isset($message) ? $message["contenu"] : "" ?></textarea><br/>
 
 	<input type="submit" value="<?= $_GET['id'] == 'new' ? 'Créer' : 'Modifier' ?>">
 </form>

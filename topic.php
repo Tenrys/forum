@@ -67,7 +67,7 @@ layout(function() {
 
 	if (count($conversations) > 0) {
 		foreach ($conversations as $conversation) { ?>
-			<article style="margin: 1em 0; padding: 0 0.5em; border: 1px solid black; border-radius: 2px; <?= $conversation['epingle'] ? 'background: #00ff0033;' : '' ?>">
+			<article>
 				<h1><a href="conversation.php?id=<?= $conversation['id'] ?>"><?= $conversation["nom"] ?></a><?= $conversation["verrouillage"] ? " (verrouillé)" : "" ?></h1>
 				<p>Créé par <code><?= $conversation["nom_auteur"] ?></code> le <code><?= $conversation["creation"] ?></code></p>
 				<?php if (isModerator()) { ?>

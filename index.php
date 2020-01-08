@@ -48,7 +48,7 @@ layout(function() {
 
 	foreach ($topics as $topic) {
 		if ($topic["rang_min"] <= ($id_rang ?? 0)) { ?>
-			<article style="margin: 1em 0; padding: 0 0.5em; border: 1px solid black; border-radius: 2px;">
+			<article>
 				<h1><a href="topic.php?id=<?= $topic['id'] ?>"><?= $topic["nom"] ?></a></h1>
 				<p><?= $topic["description"] ?? "" ?></p>
 				<?php if (isModerator()) { ?>

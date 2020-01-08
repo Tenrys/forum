@@ -135,7 +135,7 @@ layout(function() {
 
 <?php
 	foreach ($messages as $id => $message) { ?>
-		<article style="margin: 1em 0; padding: 0 0.5em; border: 1px solid black; border-radius: 2px;" id="<?= $id ?>">
+		<article id="<?= $id ?>">
 			<p><b><?= $message["nom_auteur"] ?></b>&nbsp;<code><?= $message["creation"] ?></code></p>
 			<hr/>
 			<p><?= $message["contenu"] ?></p>
@@ -166,11 +166,11 @@ layout(function() {
 	<?php }
 
 	if (!$conversation["verrouillage"] && isset($_SESSION["user"]) || isModerator()) { ?>
-		<article style="margin: 1em 0; padding: 0 0.5em; border: 1px solid black; border-radius: 2px;">
+		<article>
 			<p><b>Nouveau message</b></p>
 			<hr/>
 			<form method="post">
-				<textarea required name="contenu" placeholder="Bla bla bla..." style="width: 100%;" rows="5"></textarea><br/>
+				<textarea required name="contenu" placeholder="Bla bla bla..." rows="5"></textarea><br/>
 				<input type="submit" name="nouveau" value="Envoyer">
 			</form>
 		</article>
