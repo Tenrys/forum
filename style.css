@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:root {
+	--bg-color: hsl(201, 33%, 97%);
+	--nav-bg-color: hsl(201, 33%, 92%);
+	--nav-link-hover-bg-color: hsl(201, 33%, 87%);
+	--accent: hsl(201, 100%, 45%);
+	--accent-hover: hsl(201, 100%, 60%);
+	--inner-bg-color: hsl(201, 33%, 92%);
+	--inner-pinned-bg-color: hsl(162, 52%, 87%);
+}
+* {
+	box-sizing: border-box;
+}
+html, body {
+	padding: 0;
+	margin: 0;
+	font-family: "Roboto";
+	background: var(--bg-color);
+}
+h1, h3 {
+	margin: 0;
+	padding: 0.25em 0;
+}
+p {
+	margin: 0;
+	padding: 0.25em 0;
+}
+a {
+	color: var(--accent);
+	text-decoration: none;
+}
+a:hover {
+	color: var(--accent-hover);
+}
+
+.absolute-top-right {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+}
+.button {
+	display: inline-block;
+	border: none;
+	padding: 0.5em;
+	border-radius: 8px;
+	background: var(--accent);
+	color: white;
+	text-decoration: none;
+	font-size: 0.875em;
+	cursor: pointer;
+	line-height: 1em;
+	margin: 0;
+}
+.button:hover {
+	color: white;
+	background: var(--accent-hover);
+}
+.columns {
+    display: flex;
+    flex-direction: row;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+    margin: 0.5em;
+}
+.flex-center {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+header {
+	position: relative;
+}
+nav {
+	background: var(--nav-bg-color);
+	display: flex;
+}
+.actions {
+	display: flex;
+	padding-top: 0.5em;
+}
+
+nav ul, .actions ul, .actions form {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	flex-grow: 1;
+}
+.actions form {
+	flex-grow: 0;
+}
+.actions .start .button {
+	margin-right: 0.5em;
+}
+.actions .end .button {
+	margin-left: 0.5em;
+}
+nav ul.start, .actions ul.start {
+    justify-content: flex-start;
+	margin-right: auto;
+}
+nav ul.end, .actions ul.end {
+    justify-content: flex-end;
+	margin-left: auto;
+}
+nav ul.start {
+	padding-left: 12.5%;
+}
+nav ul.end {
+	padding-right: 12.5%;
+}
+nav ul li {
+	display: block;
+}
+nav ul li a {
+	padding: 0.75em 0.5em;
+	display: block;
+	background-color: transparent;
+	transition: background-color ease-in 0.25s;
+}
+nav ul li a:hover {
+	background-color: var(--nav-link-hover-bg-color);
+}
+
+main {
+	padding: 16px 12.5%;
+	margin: 0;
+	position: relative;
+}
+
+section.topics {
+	display: flex;
+	flex-basis: 0%;
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-wrap: wrap;
+}
+article.topic, article.conversation, article.message {
+	display: block;
+	padding: 1em;
+	margin: 0.5em;
+	border-radius: 8px;
+	background: var(--inner-bg-color);
+	position: relative;
+}
+article.conversation.pinned {
+	background: var(--inner-pinned-bg-color);
+}
+article.topic {
+	width: calc(50% - 1em);
+}
+
+.error {
+	color: red;
+}
+.success {
+	color: green;
+}
