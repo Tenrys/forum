@@ -32,16 +32,27 @@ layout(function() {
 		home();
 	}
 
-	if (isset($_POST["supprimer"]) && isset($_POST["id"]) && is_numeric($_POST["id"]) && isModerator()) {
-		$stmt = $db->prepare("SELECT * FROM messages WHERE id_conversation = ?");
-		$stmt->execute([$conversation["id"]]);
-		$firstMessage = $stmt->fetch();
-		if ($firstMessage["id"] == $_POST["id"]) {
-			$stmt = $db->prepare("DELETE FROM conversations WHERE id = ?");
-			$success = $stmt->execute([$conversation["id"]]);
-		} else {
-			$stmt = $db->prepare("DELETE FROM messages WHERE id = ?");
-			$success = $stmt->execute([$_POST["id"]]);
+	if (isset($_POST["supprimer"]) && isset($_SESSION["user"]) && isset($_POST["id"]) && is_numeric($_POST["id"])) {
+		$stmt = $db->prepare("SELECT * FROM messages WHERE id = ?");
+		$stmt->execute([$_POST["id"]]);
+		$message = $stmt->fetch();
+		if ($message) {
+			$stmt = $db->prepare("SELECT * FROM messages WHERE id_conversation = ?");
+			$stmt->execute([$conversation["id"]]);
+			$firstMessage = $stmt->fetch();
+
+			if ($message["id_auteur"] == $_SESSION["user"]["id"] || isModerator()) {
+				if ($firstMessage["id"] == $message["id"]) {
+					$stmt = $db->prepare("DELETE FROM conversations WHERE id = ?");
+					$success = $stmt->execute([$conversation["id"]]);
+
+					header("Location: topic.php?id={$conversation['id_topic']}");
+					die;
+				} else {
+					$stmt = $db->prepare("DELETE FROM messages WHERE id = ?");
+					$success = $stmt->execute([$message["id"]]);
+				}
+			}
 		}
 	}
 
@@ -54,7 +65,11 @@ layout(function() {
 		   )
 	) {
 		$stmt = $db->prepare("INSERT INTO messages (contenu, id_auteur, id_conversation) VALUES (?, ?, ?)");
-		$success = $stmt->execute([$_POST["contenu"], $_SESSION["user"]["id"], $conversation["id"]]);
+		$stmt->execute([$_POST["contenu"], $_SESSION["user"]["id"], $conversation["id"]]);
+		$messageId = $db->lastInsertId();
+
+		header("Location: conversation.php?id={$conversation['id']}#{$messageId}");
+		die;
 	}
 
 	if (isset($_POST["like"]) || isset($_POST["dislike"])) {

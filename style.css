@@ -47,12 +47,13 @@ a:hover {
 	background: var(--accent);
 	color: white;
 	text-decoration: none;
-	font-size: 0.75em;
+	font-size: 0.875em;
 	cursor: pointer;
 	line-height: 1em;
 	margin: 0;
 }
 .button:hover {
+	color: white;
 	background: var(--accent-hover);
 }
 .columns {
@@ -153,4 +154,11 @@ article.conversation.pinned {
 }
 article.topic {
 	width: calc(50% - 1em);
+}
+
+.error {
+	color: red;
+}
+.success {
+	color: green;
 }

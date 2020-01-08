@@ -9,7 +9,14 @@ if (!isset($_GET["id"])) {
 
 session_start();
 
-if (isset($_POST["rang"]) && is_numeric($_POST["rang"]) && $_POST["rang"] <= 3 && $_POST["rang"] >= 1 && $id_rang >= 3) {
+if (
+	isset($_SESSION["user"])
+&&  isset($_POST["rang"])
+&&  is_numeric($_POST["rang"])
+&&  $_POST["rang"] <= 3
+&&  $_POST["rang"] >= 1
+&&  $_SESSION["user"]["id_rang"] >= 3
+) {
 	$stmt = $db->prepare("UPDATE utilisateurs SET id_rang = ? WHERE id = ?");
 	$editSuccess = $stmt->execute([$_POST["rang"], $_GET["id"]]);
 }
@@ -35,15 +42,15 @@ layout(function() {
 <?php
 	if (isset($user)) {
 		if (isset($editSuccess) && $editSuccess) {
-			echo "<h4 class='success'>Modifications enregistrées avec succès !</h4>";
+			echo "<h4 class='flex-center success'>Modifications enregistrées avec succès !</h4>";
 		}
 
 		if (isset($_SESSION["user"]) && $_SESSION["user"]["id_rang"] >= 3 && $user["id"] != $_SESSION["user"]["id"]) { ?>
 			<form method="post">
 				<select name="rang" onchange="this.form.submit()">
-				<?php foreach ($rankNames as $k => $v) {
-					echo "<option value='$k'" . $user['id_rang'] == $k ? ' selected' : '' . ">$v</option>";
-				} ?>
+				<?php foreach ($rankNames as $k => $v) { ?>
+					<option value="<?= $k ?>" <?= $user["id_rang"] == $k ? " selected" : "" ?>><?= $v ?></option>
+				<?php } ?>
 				</select>
 			</form>
 <?php   } else {

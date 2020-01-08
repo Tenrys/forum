@@ -1,10 +1,12 @@
 <?php
 include "includes/layout.php";
-	include "includes/shortcuts.php";
+include "includes/shortcuts.php";
 
-	session_start();
+session_start();
 
 layout(function() {
+	global $db, $rankNames;
+
 	if (!isModerator()) {
 		home();
 	}
@@ -23,32 +25,42 @@ layout(function() {
 	}
 ?>
 
-<header>
+<header class="flex-center">
 	<h1>Nouveau topic</h1>
 </header>
 
-<?php
-if (isset($error)) {
-	echo "<h4 class='error'>$error</h4>";
-}
-?>
+<form method="post" style="padding: 0 25%;">
+	<div class="columns">
+		<div class="column">
+			<label for="nom">Nom du topic</label>
+			<input type="text" name="nom" required minlength="3" maxlength="255" value="<?= $nom ?? '' ?>">
+		</div>
+	</div>
 
-<form method="post">
-	<label for="nom">Nom du topic</label>
-	<input type="text" name="nom" required minlength="3" maxlength="255" value="<?= $nom ?? '' ?>">
+	<div class="columns">
+		<div class="column">
+			<label for="description">Description</label>
+			<input type="text" name="description" placeholder="Optionnel" maxlength="255" value="<?= $description ?? '' ?>">
+		</div>
+	</div>
 
-	<label for="description">Description</label>
-	<input type="text" name="description" placeholder="Optionnel" maxlength="255" value="<?= $description ?? '' ?>">
+	<div class="columns">
+		<div class="column">
+			<label for="rang_min">Rang minimum</label>
+			<select name="rang_min">
+				<option value='0'>Aucun</option>
+				<?php foreach ($rankNames as $k => $v) {
+					echo "<option value='$k'>$v</option>";
+				} ?>
+			</select>
+			<sub>Pour visibilité et accès</sub>
+		</div>
+	</div>
 
-	<label for="rang_min">Rang minimum</label>
-	<sub>Pour visibilité et accès</sub>
-	<select name="rang_min">
-		<option value='0'>Aucun</option>
-		<?php foreach ($rankNames as $k => $v) {
-			echo "<option value='$k'>$v</option>";
-		} ?>
-	</select>
-
-	<input class="button" type="submit" value="Créer">
+	<div class="columns">
+		<div class="column">
+			<input class="button" type="submit" value="Créer">
+		</div>
+	</div>
 </form>
 <?php }); ?>

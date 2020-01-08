@@ -18,7 +18,7 @@ layout(function() {
 			$stmt->execute([$login]);
 			$user = $stmt->fetch();
 
-			if ($user) {
+			if (!$user) {
 				$stmt = $db->prepare("INSERT INTO utilisateurs (login, password) VALUES (?, ?)");
 				$hashed = password_hash($password, PASSWORD_DEFAULT);
 				$success = $stmt->execute([$login, $hashed]);
@@ -31,16 +31,16 @@ layout(function() {
 	}
 ?>
 
-<header>
+<header class="flex-center">
 	<h1>Inscription</h1>
 </header>
 
 <?php
 	if (isset($error)) {
-		echo "<h4 class='error'>$error</h4>";
+		echo "<h4 class='flex-center error'>$error</h4>";
 	}
 	if (isset($success) && $success) {
-		echo "<h4 class='success'>Compte créé avec succès ! Vous pouvez dorénavant vous connecter...<br>Vous allez être redirigé dans 5 secondes...</h4>";
+		echo "<h4 class='flex-center success'>Compte créé avec succès ! Vous pouvez dorénavant vous connecter...<br>Vous allez être redirigé dans 5 secondes...</h4>";
 		header("Refresh: 5; URL=connexion.php");
 	} else { ?>
 		<form method="post" style="padding: 0 25%;">

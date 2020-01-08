@@ -30,13 +30,13 @@ layout(function() {
 		}
 	}
 ?>
-	<div class="header">
+	<header class="flex-center">
 		<h1>Connexion</h1>
-	</div>
+	</header>
 
 	<?php
 	if (isset($error)) {
-		echo "<h4 class='error'>$error</h4>";
+		echo "<h4 class='flex-center error'>$error</h4>";
 	}
 	?>
 
