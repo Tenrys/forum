@@ -20,7 +20,7 @@ layout(function() {
 				$error = "Le mot de passe que vous avez fourni ne correspond pas avec votre confirmation !";
 			}
 		} else {
-			$newInfo["password"] = $password;
+			$newInfo["password"] = password_hash($password, PASSWORD_DEFAULT);
 		}
 
 		if (!isset($error)) {
